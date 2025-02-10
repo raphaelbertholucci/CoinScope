@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CoinScope"
 include(":app")
+include(":design")

@@ -1,4 +1,4 @@
-package com.coinscope.ui.theme
+package com.coinscope.design
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

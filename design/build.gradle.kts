@@ -6,9 +6,9 @@ plugins {
 
 android {
     namespace = "com.coinscope.design"
-    compileSdk = 35
 
     defaultConfig {
+        compileSdk = 35
         minSdk = 28
     }
 
@@ -18,6 +18,10 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.8"
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "17"

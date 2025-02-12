@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.coinscope"
-    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.coinscope"
-        minSdk = 28
-        targetSdk = 35
+        compileSdk = libs.versions.compileSdk.get().toInt()
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -39,12 +39,23 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":data"))
     implementation(project(":design"))
+    implementation(project(":domain"))
+
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.firebase.crashlytics)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil.compose)
+
+    implementation(libs.koin.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

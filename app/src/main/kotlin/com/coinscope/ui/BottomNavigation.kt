@@ -1,4 +1,4 @@
-package com.coinscope
+package com.coinscope.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,9 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.coinscope.design.DarkGrey
-import com.coinscope.design.Grey
-import com.coinscope.design.White
+import com.coinscope.R
+import com.coinscope.design.resources.DarkGrey
+import com.coinscope.design.resources.Grey
+import com.coinscope.design.resources.White
 
 sealed class BottomNavItem(
     val route: String,

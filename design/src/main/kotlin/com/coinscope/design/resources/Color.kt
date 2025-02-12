@@ -1,4 +1,4 @@
-package com.coinscope.design
+package com.coinscope.design.resources
 
 import androidx.compose.ui.graphics.Color
 

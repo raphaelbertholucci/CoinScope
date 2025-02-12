@@ -1,4 +1,4 @@
-package com.coinscope
+package com.coinscope.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,7 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.coinscope.design.CoinScopeTheme
+import com.coinscope.design.resources.CoinScopeTheme
+import com.coinscope.ui.coins.CoinsScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -41,7 +42,7 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             startDestination = BottomNavItem.Assets.route
                         ) {
-                            composable(BottomNavItem.Assets.route) { Greeting("Assets") }
+                            composable(BottomNavItem.Assets.route) { CoinsScreen() }
                             composable(BottomNavItem.Rates.route) { Greeting("Rates") }
                             composable(BottomNavItem.Exchanges.route) { Greeting("Exchanges") }
                         }

@@ -2,4 +2,7 @@
     <string name="app_name">CoinScope</string>
 
     <string name="generic_error_message">Something went wrong. Please try again later.</string>
+
+    <string name="search_idle_title">Find what you want</string>
+    <string name="search_idle_body">Use the text box above to describe the kind of asset you are looking for. To get the best results, try to be as specific as possible</string>
 </resources>

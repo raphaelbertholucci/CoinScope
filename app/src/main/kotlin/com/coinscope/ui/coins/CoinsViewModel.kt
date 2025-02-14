@@ -17,9 +17,9 @@ class CoinsViewModel(private val getCoins: GetCoins) : ViewModel() {
     private val _content = MutableStateFlow<UIState<List<Coin>>>(UIState.Loading)
     val content = _content.asStateFlow()
 
-//    init {
-//        fetchCoins()
-//    }
+    init {
+        fetchCoins()
+    }
 
     private fun fetchCoins() {
         getCoins(Unit)

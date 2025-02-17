@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -98,23 +99,12 @@ fun Content(data: LazyPagingItems<Exchange>) {
                     }
                 }
                 item?.trustScoreRank?.let { rank ->
-                    Box(
-                        modifier = Modifier
-                            .size(30.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = MaterialTheme.shapes.extraSmall
-                            )
-                            .padding(all = Dimens.small)
-                    ) {
-                        Text(
-                            text = "${rank}º",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
+                    Text(
+                        text = "${rank}º",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
                 }
-
             }
         }
     }

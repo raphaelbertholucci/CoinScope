@@ -17,19 +17,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
-import com.coinscope.core.UIState
+import com.coinscope.R
 import com.coinscope.core.extensions.formatCurrency
 import com.coinscope.core.extensions.formatPercentage
 import com.coinscope.design.resources.Dimens
@@ -44,7 +46,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun CoinsScreen(viewModel: CoinsViewModel = getViewModel()) {
 
-    val contentState by viewModel.content.collectAsStateWithLifecycle()
+    val contentState = viewModel.pagedContent.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = {
@@ -58,11 +60,11 @@ fun CoinsScreen(viewModel: CoinsViewModel = getViewModel()) {
         Crossfade(
             targetState = contentState,
             Modifier.padding(top = it.calculateTopPadding())
-        ) { content ->
-            when (content) {
-                is UIState.Success -> Content(content.data)
-                is UIState.Error -> ErrorContent(content.message)
-                is UIState.Loading -> LoadingWidget()
+        ) { state ->
+            when (state.loadState.refresh) {
+                is LoadState.NotLoading -> Content(state)
+                is LoadState.Loading -> LoadingWidget()
+                is LoadState.Error -> ErrorContent(message = stringResource(R.string.generic_error_message))
                 else -> Unit
             }
         }
@@ -70,12 +72,12 @@ fun CoinsScreen(viewModel: CoinsViewModel = getViewModel()) {
 }
 
 @Composable
-fun Content(coinList: List<Coin>) {
+fun Content(coinList: LazyPagingItems<Coin>) {
     LazyColumn(
         contentPadding = PaddingValues(all = Dimens.paddingMedium),
         verticalArrangement = Arrangement.spacedBy(Dimens.medium)
     ) {
-        items(coinList.size) { index ->
+        items(coinList.itemCount) { index ->
             val coin = coinList[index]
             CoinItem(coin)
         }
@@ -83,7 +85,7 @@ fun Content(coinList: List<Coin>) {
 }
 
 @Composable
-fun CoinItem(coin: Coin) {
+fun CoinItem(coin: Coin?) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -91,8 +93,8 @@ fun CoinItem(coin: Coin) {
             .padding(all = Dimens.medium)
     ) {
         AsyncImage(
-            model = coin.image,
-            contentDescription = coin.name,
+            model = coin?.image,
+            contentDescription = coin?.name,
             placeholder = painterResource(id = com.coinscope.design.R.drawable.placeholder),
             error = painterResource(id = com.coinscope.design.R.drawable.placeholder),
             contentScale = ContentScale.Crop,
@@ -103,16 +105,17 @@ fun CoinItem(coin: Coin) {
         SpacerWidget(Dimens.large)
         Column(Modifier.weight(1f)) {
             Text(
-                text = coin.name.orEmpty(), style = MaterialTheme.typography.bodyMedium
+                text = coin?.name.orEmpty(),
+                style = MaterialTheme.typography.bodyMedium
             )
             Text(
-                text = coin.symbol?.uppercase().orEmpty(),
+                text = coin?.symbol?.uppercase().orEmpty(),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.secondary
             )
         }
 
-        val priceChangePercentage24h = coin.priceChangePercentage24h ?: 0.0
+        val priceChangePercentage24h = coin?.priceChangePercentage24h ?: 0.0
         var pricePercentageColor = MaterialTheme.colorScheme.error
         var iconModifier = Modifier.size(Dimens.iconMedium)
 
@@ -136,7 +139,7 @@ fun CoinItem(coin: Coin) {
         }
         SpacerWidget(Dimens.big)
         Text(
-            text = coin.currentPrice.formatCurrency(),
+            text = coin?.currentPrice.formatCurrency(),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.widthIn(min = 70.dp),
             textAlign = TextAlign.End

@@ -8,7 +8,7 @@ import com.coinscope.domain.model.SearchItem
 import kotlinx.coroutines.flow.Flow
 
 interface CoinsRepository {
-    fun getCoins(): Flow<ResultWrapper<List<Coin>>>
+    fun getCoins(): Flow<PagingData<Coin>>
     fun search(query: String): Flow<ResultWrapper<List<SearchItem>>>
     fun getExchanges(): Flow<PagingData<Exchange>>
 }

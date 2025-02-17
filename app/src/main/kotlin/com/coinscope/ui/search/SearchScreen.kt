@@ -33,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.coinscope.R
 import com.coinscope.core.UIState
+import com.coinscope.core.extensions.hideLoading
 import com.coinscope.core.extensions.showLoading
 import com.coinscope.design.resources.Dimens
 import com.coinscope.design.resources.Shapes
@@ -55,6 +56,8 @@ fun SearchScreen(viewModel: SearchViewModel = getViewModel()) {
             viewModel.content.showLoading()
             delay(2000)
             viewModel.search()
+        } else {
+            viewModel.content.hideLoading()
         }
     }
 

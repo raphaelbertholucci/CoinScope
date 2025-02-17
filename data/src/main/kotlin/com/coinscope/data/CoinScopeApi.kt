@@ -8,7 +8,9 @@ import retrofit2.http.Query
 
 interface CoinScopeApi {
     @GET("coins/markets")
-    suspend fun getCoins(@Query("vs_currency") currency: String = "usd"): List<CoinResponse>
+    suspend fun getCoins(@Query("vs_currency") currency: String = "usd",
+                         @Query("per_page") perPage: Int = 30,
+                         @Query("page") page: Int): List<CoinResponse>
 
     @GET("search")
     suspend fun search(@Query("query") query: String): SearchResponse

@@ -58,14 +58,16 @@ fun SearchScreen(viewModel: SearchViewModel = getViewModel()) {
         }
     }
 
-    Scaffold {
-        Column(Modifier.padding(top = Dimens.large)) {
+    Scaffold(
+        topBar = {
             Text(
                 text = "Search",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(horizontal = Dimens.large)
             )
-
+        }
+    ) {
+        Column(Modifier.padding(top = it.calculateTopPadding())) {
             SearchWidget(
                 text = viewModel.query,
                 modifier = Modifier.padding(all = Dimens.large)
@@ -88,7 +90,9 @@ fun HintContent() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().padding(all = Dimens.extraLarge)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = Dimens.extraLarge)
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_manage_search),
@@ -174,10 +178,17 @@ fun SearchItemContent(item: SearchItem) {
         }
         SpacerWidget(Dimens.big)
         item.marketCapRank?.let { rank ->
-            Text(
-                text = "${rank}º",
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    text = "Market Cap",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    text = "${rank}º",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
         item.marketType?.let { marketType ->
             Text(

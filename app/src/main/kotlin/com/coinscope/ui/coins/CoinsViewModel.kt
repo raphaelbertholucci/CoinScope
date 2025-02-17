@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class CoinsViewModel(private val getCoins: GetCoins) : ViewModel() {
@@ -23,7 +24,7 @@ class CoinsViewModel(private val getCoins: GetCoins) : ViewModel() {
 
     private fun fetchCoins() {
         getCoins(Unit)
-            .onEach { _content.wrapResponse(it) }
+            .map { _content.wrapResponse(it) }
             .catch { _content.value = UIState.Error() }
             .launchIn(viewModelScope)
     }

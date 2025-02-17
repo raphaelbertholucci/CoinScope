@@ -20,12 +20,12 @@ android {
         load(rootProject.file("local.properties").inputStream())
     }
     val apiKey: String = localProperties.getProperty("API_KEY") ?: ""
+    val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
 
     buildTypes {
-        val baseUrl = "\"https://api.coingecko.com/api/v3/\""
 
         all {
-            buildConfigField("String", "BASE_URL", baseUrl)
+            buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
             buildConfigField("String", "API_KEY", "\"$apiKey\"")
         }
     }
@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.gson)
     implementation(libs.gson.converter)
+
+    implementation(libs.paging.runtime)
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)

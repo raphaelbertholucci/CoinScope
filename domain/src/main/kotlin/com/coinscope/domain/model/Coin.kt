@@ -26,5 +26,5 @@ data class Coin(
     val roi: Any? = null,
     val symbol: String? = null,
     val totalSupply: Double? = null,
-    val totalVolume: Long? = null
+    val totalVolume: Double? = null
 )

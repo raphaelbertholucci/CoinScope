@@ -54,5 +54,5 @@ class CoinResponse(
     @SerializedName("total_supply")
     val totalSupply: Double? = null,
     @SerializedName("total_volume")
-    val totalVolume: Long? = null
+    val totalVolume: Double? = null
 )

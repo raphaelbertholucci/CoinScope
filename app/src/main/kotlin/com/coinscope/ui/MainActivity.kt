@@ -20,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.coinscope.design.resources.CoinScopeTheme
 import com.coinscope.ui.coins.CoinsScreen
+import com.coinscope.ui.exchanges.ExchangesScreen
 import com.coinscope.ui.search.SearchScreen
 
 class MainActivity : ComponentActivity() {
@@ -34,10 +35,8 @@ class MainActivity : ComponentActivity() {
                 val currentRoute =
                     navController.currentBackStackEntryAsState().value?.destination?.route
 
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = { BottomNavBar(navController, currentRoute) }
-                ) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    bottomBar = { BottomNavBar(navController, currentRoute) }) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
                         NavHost(
                             navController = navController,
@@ -45,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             composable(BottomNavItem.Assets.route) { CoinsScreen() }
                             composable(BottomNavItem.Search.route) { SearchScreen() }
-                            composable(BottomNavItem.Exchanges.route) { Greeting("Exchanges") }
+                            composable(BottomNavItem.Exchanges.route) { ExchangesScreen() }
                         }
                     }
                 }

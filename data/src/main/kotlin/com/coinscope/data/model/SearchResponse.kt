@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 class SearchResponse(
     @SerializedName("coins") val coins: List<CoinSearchResponse>? = null,
-    @SerializedName("exchanges") val exchanges: List<ExchangeResponse>? = null,
+    @SerializedName("exchanges") val exchanges: List<ExchangeSearchResponse>? = null,
     @SerializedName("categories") val categories: List<CategoryResponse>? = null,
     @SerializedName("nfts") val nfts: List<NftResponse>? = null
 )
@@ -20,7 +20,7 @@ class CoinSearchResponse(
     @SerializedName("thumb") val thumb: String? = null
 )
 
-class ExchangeResponse(
+class ExchangeSearchResponse(
     @SerializedName("id") val id: String? = null,
     @SerializedName("large") val large: String? = null,
     @SerializedName("market_type") val marketType: String? = null,

@@ -41,6 +41,12 @@ val Typography = Typography(
         fontSize = 14.sp,
         lineHeight = 24.sp,
     ),
+    labelSmall = TextStyle(
+        fontFamily = Nunito,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
+        lineHeight = 24.sp,
+    ),
     headlineMedium = TextStyle(
         fontFamily = PlayFair,
         fontWeight = FontWeight.SemiBold,

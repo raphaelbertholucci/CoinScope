@@ -1,6 +1,5 @@
 package com.coinscope.ui.coins
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,14 +41,24 @@ import com.coinscope.domain.model.Coin
 import com.coinscope.ui.ScreenPreview
 import org.koin.androidx.compose.getViewModel
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CoinsScreen(viewModel: CoinsViewModel = getViewModel()) {
 
     val contentState by viewModel.content.collectAsStateWithLifecycle()
 
-    Scaffold {
-        Crossfade(targetState = contentState) { content ->
+    Scaffold(
+        topBar = {
+            Text(
+                text = "Welcome Investor!",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(all = Dimens.large)
+            )
+        }
+    ) {
+        Crossfade(
+            targetState = contentState,
+            Modifier.padding(top = it.calculateTopPadding())
+        ) { content ->
             when (content) {
                 is UIState.Success -> Content(content.data)
                 is UIState.Error -> ErrorContent(content.message)
@@ -66,9 +75,6 @@ fun Content(coinList: List<Coin>) {
         contentPadding = PaddingValues(all = Dimens.paddingMedium),
         verticalArrangement = Arrangement.spacedBy(Dimens.medium)
     ) {
-        item {
-            Text("Welcome Investor!", style = MaterialTheme.typography.headlineMedium)
-        }
         items(coinList.size) { index ->
             val coin = coinList[index]
             CoinItem(coin)

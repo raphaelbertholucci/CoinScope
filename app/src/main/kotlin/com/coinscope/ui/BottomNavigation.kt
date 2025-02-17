@@ -39,7 +39,7 @@ sealed class BottomNavItem(
 @Composable
 fun BottomNavBar(navController: NavController, currentRoute: String?) {
     NavigationBar(
-        modifier = Modifier.fillMaxWidth().height(Dimens.navBarHeight),
+        modifier = Modifier.fillMaxWidth(),
         tonalElevation = 8.dp
     ) {
         BottomNavItem.items.forEach { item ->

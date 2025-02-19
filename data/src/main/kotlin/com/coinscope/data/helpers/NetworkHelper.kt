@@ -15,7 +15,7 @@ fun <T> safeApiCall(
         val result = try {
             ResultWrapper.Success(apiCall.invoke(true))
         } catch (throwable: Throwable) {
-            Log.d("Crash: ", throwable.message.toString())
+//            Log.d("Crash: ", throwable.message.toString())
             when (throwable) {
                 is UnknownHostException -> ResultWrapper.NetworkError
                 is HttpException -> {

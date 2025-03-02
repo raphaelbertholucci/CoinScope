@@ -5,9 +5,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.coinscope.data.CoinScopeApi
 import com.coinscope.data.helpers.safeApiCall
+import com.coinscope.data.mapper.CoinDetailsMapper
 import com.coinscope.data.mapper.SearchMapper
 import com.coinscope.domain.ResultWrapper
 import com.coinscope.domain.model.Coin
+import com.coinscope.domain.model.CoinDetails
 import com.coinscope.domain.model.Exchange
 import com.coinscope.domain.model.SearchItem
 import com.coinscope.domain.repository.CoinsRepository
@@ -33,5 +35,11 @@ class CoinsRepositoryImpl(private val api: CoinScopeApi) : CoinsRepository {
             config = PagingConfig(pageSize = 30),
             pagingSourceFactory = { ExchangesPagingSource(api) }
         ).flow
+    }
+
+    override fun getCoinByID(id: String): Flow<ResultWrapper<CoinDetails>> {
+        return safeApiCall {
+            CoinDetailsMapper.mapToDomain(api.getCoinByID(id = id))
+        }
     }
 }

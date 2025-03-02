@@ -1,9 +1,11 @@
 package com.coinscope.data
 
+import com.coinscope.data.model.CoinDetailsResponse
 import com.coinscope.data.model.CoinResponse
 import com.coinscope.data.model.ExchangeResponse
 import com.coinscope.data.model.SearchResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CoinScopeApi {
@@ -22,4 +24,7 @@ interface CoinScopeApi {
         @Query("per_page") perPage: Int = 30,
         @Query("page") page: Int
     ): List<ExchangeResponse>
+
+    @GET("coins/id")
+    suspend fun getCoinByID(@Path("id") id: String): CoinDetailsResponse
 }

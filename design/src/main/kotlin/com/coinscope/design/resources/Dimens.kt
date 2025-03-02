@@ -17,8 +17,10 @@ object Dimens {
     val paddingLarge = 24.dp
 
     val buttonHeight = 48.dp
+    val detailsItemHeight = 60.dp
     val navBarHeight = 80.dp
     val iconMedium = 20.dp
     val iconSize = 24.dp
     val iconBig = 32.dp
+    val iconLargest = 70.dp
 }

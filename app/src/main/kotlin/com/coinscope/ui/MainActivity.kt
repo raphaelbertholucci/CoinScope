@@ -20,8 +20,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.coinscope.design.resources.CoinScopeTheme
 import com.coinscope.ui.coins.CoinsScreen
+import com.coinscope.ui.details.CoinDetailsScreen
+import com.coinscope.ui.details.CoinDetailsViewModel
 import com.coinscope.ui.exchanges.ExchangesScreen
 import com.coinscope.ui.search.SearchScreen
+import org.koin.androidx.compose.getViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -45,6 +48,9 @@ class MainActivity : ComponentActivity() {
                             composable(BottomNavItem.Assets.route) { CoinsScreen() }
                             composable(BottomNavItem.Search.route) { SearchScreen() }
                             composable(BottomNavItem.Exchanges.route) { ExchangesScreen() }
+                            composable(BottomNavItem.Exchanges.route) {
+                                CoinDetailsScreen()
+                            }
                         }
                     }
                 }

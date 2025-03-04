@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,8 +33,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.coinscope.R
 import com.coinscope.core.UIState
-import com.coinscope.core.extensions.hideLoading
-import com.coinscope.core.extensions.showLoading
 import com.coinscope.design.resources.Dimens
 import com.coinscope.design.resources.Shapes
 import com.coinscope.design.widget.ErrorContent
@@ -42,24 +40,13 @@ import com.coinscope.design.widget.LoadingWidget
 import com.coinscope.design.widget.SearchWidget
 import com.coinscope.design.widget.SpacerWidget
 import com.coinscope.domain.model.SearchItem
-import kotlinx.coroutines.delay
 import org.koin.androidx.compose.getViewModel
 import java.util.Locale
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = getViewModel()) {
+fun SearchScreen(viewModel: SearchViewModel = getViewModel(), onSelect: (String?) -> Unit) {
     val contentState by viewModel.content.collectAsStateWithLifecycle()
-
-    LaunchedEffect(viewModel.query.value) {
-        if (viewModel.query.value.isNotEmpty()) {
-            viewModel.content.showLoading()
-            delay(2000)
-            viewModel.search()
-        } else {
-            viewModel.content.hideLoading()
-        }
-    }
+    val searchQuery = viewModel.query
 
     Scaffold(
         topBar = {
@@ -72,13 +59,13 @@ fun SearchScreen(viewModel: SearchViewModel = getViewModel()) {
     ) {
         Column(Modifier.padding(top = it.calculateTopPadding())) {
             SearchWidget(
-                text = viewModel.query,
+                text = searchQuery,
                 modifier = Modifier.padding(all = Dimens.large)
-            ) { query -> viewModel.query.value = query }
+            ) { query -> viewModel.updateSearchQuery(query) }
 
             Crossfade(targetState = contentState) { content ->
                 when (content) {
-                    is UIState.Success -> SearchContent(content.data)
+                    is UIState.Success -> SearchContent(content.data, onSelect)
                     is UIState.Error -> ErrorContent(content.message)
                     is UIState.Loading -> LoadingWidget()
                     else -> HintContent()
@@ -123,7 +110,7 @@ fun HintContent() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SearchContent(data: List<SearchItem>) {
+fun SearchContent(data: List<SearchItem>, onSelect: (String?) -> Unit) {
     val groupedSearch = data.groupBy { it.type }
     LazyColumn(verticalArrangement = Arrangement.spacedBy(Dimens.medium)) {
         groupedSearch.forEach { search ->
@@ -139,19 +126,20 @@ fun SearchContent(data: List<SearchItem>) {
             }
             val list = search.value
             items(list.size) { index ->
-                SearchItemContent(list[index])
+                SearchItemContent(list[index], onSelect)
             }
         }
     }
 }
 
 @Composable
-fun SearchItemContent(item: SearchItem) {
+fun SearchItemContent(item: SearchItem, onSelect: (String?) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(all = Dimens.medium)
+            .clickable { if (item.type == "coin") onSelect(item.id) }
     ) {
         item.thumb?.let { thumb ->
             AsyncImage(

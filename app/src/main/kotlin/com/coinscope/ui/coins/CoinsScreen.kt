@@ -1,6 +1,7 @@
 package com.coinscope.ui.coins
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -44,7 +45,7 @@ import com.coinscope.ui.ScreenPreview
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun CoinsScreen(viewModel: CoinsViewModel = getViewModel()) {
+fun CoinsScreen(viewModel: CoinsViewModel = getViewModel(), onSelect: (Coin) -> Unit) {
 
     val contentState = viewModel.pagedContent.collectAsLazyPagingItems()
 
@@ -62,7 +63,7 @@ fun CoinsScreen(viewModel: CoinsViewModel = getViewModel()) {
             Modifier.padding(top = it.calculateTopPadding())
         ) { state ->
             when (state.loadState.refresh) {
-                is LoadState.NotLoading -> Content(state)
+                is LoadState.NotLoading -> Content(state, onSelect)
                 is LoadState.Loading -> LoadingWidget()
                 is LoadState.Error -> ErrorContent(message = stringResource(R.string.generic_error_message))
                 else -> Unit
@@ -72,25 +73,28 @@ fun CoinsScreen(viewModel: CoinsViewModel = getViewModel()) {
 }
 
 @Composable
-fun Content(coinList: LazyPagingItems<Coin>) {
+fun Content(coinList: LazyPagingItems<Coin>, onSelect: (Coin) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(all = Dimens.paddingMedium),
         verticalArrangement = Arrangement.spacedBy(Dimens.medium)
     ) {
         items(coinList.itemCount) { index ->
             val coin = coinList[index]
-            CoinItem(coin)
+            CoinItem(coin) {
+                coin?.let(onSelect)
+            }
         }
     }
 }
 
 @Composable
-fun CoinItem(coin: Coin?) {
+fun CoinItem(coin: Coin?, onSelect: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(all = Dimens.medium)
+            .clickable { onSelect() }
     ) {
         AsyncImage(
             model = coin?.image,
@@ -150,5 +154,5 @@ fun CoinItem(coin: Coin?) {
 @Preview(showBackground = true)
 @Composable
 private fun CoinsPreview() {
-    ScreenPreview { CoinsScreen() }
+    ScreenPreview { CoinsScreen {} }
 }

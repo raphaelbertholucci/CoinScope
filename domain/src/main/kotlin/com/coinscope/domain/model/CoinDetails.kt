@@ -1,24 +1,23 @@
 package com.coinscope.domain.model
 
 data class CoinDetails(
-    val id: String,
-    val symbol: String,
-    val name: String,
-    val hashingAlgorithm: String,
-    val categories: List<String>,
-    val description: String,
-    val links: Link,
-    val image: Image,
-    val genesisDate: String,
-    val rank: Int,
-    val marketData: MarketData
+    val id: String?,
+    val symbol: String?,
+    val name: String?,
+    val hashingAlgorithm: String?,
+    val categories: List<String>?,
+    val description: String?,
+    val links: Link?,
+    val image: Image?,
+    val genesisDate: String?,
+    val rank: Int?,
+    val marketData: MarketData?
 )
 
 data class Link(
-    val homepage: List<String?>? = null,
+    val homepage: List<String>? = null,
     val officialForumUrl: List<String>? = null,
-    val reposUrl: ReposUrl? = null,
-    val subredditUrl: String? = null
+    val reposUrl: ReposUrl? = null
 )
 
 data class ReposUrl(
@@ -33,8 +32,8 @@ data class Image(
 )
 
 data class MarketData(
-    val price: Double,
-    val high24h: Double,
-    val low24h: Double,
-    val priceChange24h: Double
+    val price: Double?,
+    val high24h: Double?,
+    val low24h: Double?,
+    val priceChange24h: Double?
 )

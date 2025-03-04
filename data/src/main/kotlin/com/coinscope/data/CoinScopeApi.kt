@@ -25,6 +25,6 @@ interface CoinScopeApi {
         @Query("page") page: Int
     ): List<ExchangeResponse>
 
-    @GET("coins/id")
+    @GET("coins/{id}")
     suspend fun getCoinByID(@Path("id") id: String): CoinDetailsResponse
 }

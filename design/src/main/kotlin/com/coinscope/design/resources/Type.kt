@@ -51,5 +51,10 @@ val Typography = Typography(
         fontFamily = PlayFair,
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = Nunito,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp
     )
 )

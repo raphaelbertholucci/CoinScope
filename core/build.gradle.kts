@@ -28,4 +28,9 @@ android {
 }
 dependencies {
     implementation(libs.androidx.runtime.android)
+
+    testImplementation(libs.arch.core.testing)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
 }

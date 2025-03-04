@@ -51,7 +51,7 @@ val dataModule = module {
             .connectTimeout(CONN_TIMEOUT_SEC, TimeUnit.SECONDS)
             .readTimeout(CONN_TIMEOUT_SEC, TimeUnit.SECONDS)
             .writeTimeout(CONN_TIMEOUT_SEC, TimeUnit.SECONDS)
-            .connectionSpecs(listOf(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
+            .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS))
             .build()
     }
 

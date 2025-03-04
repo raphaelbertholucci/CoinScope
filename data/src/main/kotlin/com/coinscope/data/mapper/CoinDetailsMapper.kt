@@ -20,17 +20,17 @@ object CoinDetailsMapper : BaseMapper<CoinDetailsResponse, CoinDetails> {
 
     override fun mapToDomain(response: CoinDetailsResponse): CoinDetails {
         return CoinDetails(
-            id = response.id,
+            id = response.id.orEmpty(),
             symbol = response.symbol,
             name = response.name,
             hashingAlgorithm = response.hashingAlgorithm,
             categories = response.categories,
-            description = DescriptionMapper.mapToDomain(response.description),
-            links = LinksMapper.mapToDomain(response.links),
-            image = ImageMapper.mapToDomain(response.image),
+            description = response.description?.let { DescriptionMapper.mapToDomain(it) },
+            links = response.links?.let { LinksMapper.mapToDomain(it) },
+            image = response.image?.let { ImageMapper.mapToDomain(it) },
             genesisDate = response.genesisDate,
             rank = response.rank,
-            marketData = MarketDataMapper.mapToDomain(response.marketData)
+            marketData = response.marketData?.let { MarketDataMapper.mapToDomain(it) }
         )
     }
 }
@@ -41,7 +41,7 @@ object DescriptionMapper : BaseMapper<DescriptionResponse, String> {
     }
 
     override fun mapToDomain(response: DescriptionResponse): String {
-        return response.english
+        return response.english.orEmpty()
     }
 }
 
@@ -55,7 +55,6 @@ object LinksMapper : BaseMapper<LinkResponse, Link> {
             homepage = response.homepage,
             officialForumUrl = response.officialForumUrl,
             reposUrl = response.reposUrl?.let { ReposUrlMapper.mapToDomain(it) },
-            subredditUrl = response.subredditUrl
         )
     }
 }
@@ -91,9 +90,9 @@ object MarketDataMapper : BaseMapper<MarketDataResponse, MarketData> {
 
     override fun mapToDomain(response: MarketDataResponse): MarketData {
         return MarketData(
-            price = response.price.usd,
-            high24h = response.high24h.usd,
-            low24h = response.low24h.usd,
+            price = response.price?.usd,
+            high24h = response.high24h?.usd,
+            low24h = response.low24h?.usd,
             priceChange24h = response.priceChange24h
         )
     }

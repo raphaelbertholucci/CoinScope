@@ -1,7 +1,7 @@
 package com.coinscope.ui.details
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +34,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.coinscope.core.UIState
 import com.coinscope.core.extensions.formatCurrency
+import com.coinscope.core.extensions.formatDate
+import com.coinscope.core.extensions.openBrowser
 import com.coinscope.design.resources.Dimens
 import com.coinscope.design.resources.Dimens.detailsItemHeight
 import com.coinscope.design.resources.Shapes
@@ -41,15 +48,28 @@ import com.coinscope.domain.model.Link
 import com.coinscope.domain.model.MarketData
 import com.coinscope.domain.model.ReposUrl
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CoinDetailsScreen(viewModel: CoinDetailsViewModel = getViewModel()) {
+fun CoinDetailsScreen(
+    id: String,
+    viewModel: CoinDetailsViewModel = getViewModel { parametersOf(id) },
+    onBack: () -> Unit
+) {
 
     val state by viewModel.details.collectAsStateWithLifecycle()
 
-    Scaffold {
-        Crossfade(state) { details ->
+    Scaffold(
+        topBar = {
+            IconButton(
+                onClick = { onBack() },
+                modifier = Modifier.padding(Dimens.medium)
+            ) {
+                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            }
+        }
+    ) {
+        Crossfade(state, modifier = Modifier.padding(top = it.calculateTopPadding())) { details ->
             when (details) {
                 is UIState.Success -> UIContent(details.data)
                 is UIState.Loading -> LoadingWidget()
@@ -70,7 +90,7 @@ fun UIContent(data: CoinDetails) {
             .padding(all = Dimens.extraLarge)
     ) {
         AsyncImage(
-            model = data.image.large,
+            model = data.image?.large,
             contentDescription = "Details Image",
             placeholder = painterResource(id = com.coinscope.design.R.drawable.placeholder),
             error = painterResource(id = com.coinscope.design.R.drawable.placeholder),
@@ -80,13 +100,13 @@ fun UIContent(data: CoinDetails) {
                 .clip(Shapes.medium)
         )
         SpacerWidget(Dimens.small)
-        Text(text = data.name, style = MaterialTheme.typography.titleMedium)
-        Text(text = data.symbol, style = MaterialTheme.typography.bodySmall)
+        Text(text = data.name.orEmpty(), style = MaterialTheme.typography.titleMedium)
+        Text(text = data.symbol.orEmpty(), style = MaterialTheme.typography.bodySmall)
         SpacerWidget(Dimens.large)
         Text(text = "Current Price", style = MaterialTheme.typography.labelSmall)
         Text(
-            text = data.marketData.price.formatCurrency(),
-            style = MaterialTheme.typography.bodyMedium
+            text = data.marketData?.price.formatCurrency(),
+            style = MaterialTheme.typography.titleSmall
         )
         SpacerWidget(Dimens.large)
         Row(
@@ -97,7 +117,7 @@ fun UIContent(data: CoinDetails) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = "Low 24H", style = MaterialTheme.typography.labelSmall)
                 Text(
-                    text = data.marketData.low24h.formatCurrency(),
+                    text = data.marketData?.low24h.formatCurrency(),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
@@ -105,7 +125,7 @@ fun UIContent(data: CoinDetails) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = "High 24H", style = MaterialTheme.typography.labelSmall)
                 Text(
-                    text = data.marketData.high24h.formatCurrency(),
+                    text = data.marketData?.high24h.formatCurrency(),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.tertiary
                 )
@@ -119,7 +139,7 @@ fun UIContent(data: CoinDetails) {
         )
         SpacerWidget(Dimens.small)
         Text(
-            text = data.description,
+            text = data.description.orEmpty(),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.align(Alignment.Start)
         )
@@ -129,19 +149,49 @@ fun UIContent(data: CoinDetails) {
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.align(Alignment.Start)
         )
+        data.genesisDate?.let {
+            DetailsItem(
+                key = "Genesis Date",
+                value = it.formatDate()
+            )
+        }
+        data.hashingAlgorithm?.let {
+            DetailsItem(
+                key = "Hashing Algorithm",
+                value = it
+            )
+        }
+
         DetailsItem(
-            key = "Genesis Date",
-            value = data.genesisDate
+            key = "Market Cap Rank",
+            value = "${data.rank}º"
         )
-        DetailsItem(
-            key = "Hashing Algorithm",
-            value = data.hashingAlgorithm
-        )
+
+        data.links?.homepage?.let { homepage ->
+            if (homepage.isNotEmpty()) {
+                DetailsItem(
+                    key = "Home Page",
+                    value = homepage.first(),
+                    isLink = true
+                )
+            }
+        }
+
+        data.links?.officialForumUrl?.let { officialForumUrl ->
+            if (officialForumUrl.isNotEmpty()) {
+                DetailsItem(
+                    key = "Official Forum",
+                    value = officialForumUrl.first(),
+                    isLink = true
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun DetailsItem(key: String, value: String) {
+fun DetailsItem(key: String, value: String, isLink: Boolean = false) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -154,11 +204,21 @@ fun DetailsItem(key: String, value: String) {
             modifier = Modifier.weight(1F)
         )
         SpacerWidget(Dimens.large)
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold
-        )
+        if (isLink) {
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable { context.openBrowser(value) }
+            )
+        } else {
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
     HorizontalDivider()
 }
@@ -180,8 +240,7 @@ private fun CoinDetailsPreview() {
                 reposUrl = ReposUrl(
                     github = listOf("https://github.com/bitcoin/bitcoin"),
                     bitbucket = null
-                ),
-                subredditUrl = "https://www.reddit.com/r/Bitcoin/"
+                )
             ),
             image = Image(
                 large = "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",

@@ -26,7 +26,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -41,7 +40,6 @@ import com.coinscope.design.widget.ErrorContent
 import com.coinscope.design.widget.LoadingWidget
 import com.coinscope.design.widget.SpacerWidget
 import com.coinscope.domain.model.Coin
-import com.coinscope.ui.ScreenPreview
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -149,10 +147,4 @@ fun CoinItem(coin: Coin?, onSelect: () -> Unit) {
             textAlign = TextAlign.End
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CoinsPreview() {
-    ScreenPreview { CoinsScreen {} }
 }

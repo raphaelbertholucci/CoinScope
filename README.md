@@ -15,11 +15,11 @@ A powerful cryptocurrency price tracking app built with **Jetpack Compose**, **K
 
 CoinScope follows MVVM with Clean Architecture and modular structure to ensure scalability and maintainability.
 
-📂 app/          # UI Screens and ViewModels (Jetpack Compose)
-📂 data/         # API calls and repositories
-📂 domain/       # Use cases and domain models
-📂 design/       # UI Widgets that can be reused in the project
-📂 core/         # Common features, classes, extensions, etc.
+    📂 app/              # UI Screens and ViewModels (Jetpack Compose)
+    📂 data/             # API calls and repositories
+    📂 domain/           # Use cases and domain models
+    📂 design/           # UI Widgets that can be reused in the project
+    📂 core/             # Common features, classes, extensions, etc.
 
 ### Why Modular Architecture?
 

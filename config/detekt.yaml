@@ -1,0 +1,26 @@
+build:
+  maxIssues: 0 # Fails build if issues found
+
+complexity:
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 10
+  LongMethod:
+    active: true
+    threshold: 60
+
+style:
+  MagicNumber:
+    active: true
+    ignorePropertyDeclaration: true
+  WildcardImport:
+    active: true
+
+formatting:
+  active: true
+  android: true
+  Indentation:
+    active: true
+  MaximumLineLength:
+    active: true
+    maxLineLength: 120

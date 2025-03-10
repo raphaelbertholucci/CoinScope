@@ -59,17 +59,22 @@ Run tests locally:
 ```
 
 ## 📸 Screenshots
+
 ### Home (Light & Dark)
-<p align="center">
-<img src="https://github.com/raphaelbertholucci/CoinScope/blob/main/readme-pictures/home_light.png" alt="Home Screen Light" width="250" height="480" />
-<img src="https://github.com/raphaelbertholucci/CoinScope/blob/main/readme-pictures/home_dark.png" alt="Home Screen Dark" width="250" height="480" />
-</p>
+
+<div style="display:flex; justify-content:center; gap:20px;">
+  <img src="https://raw.githubusercontent.com/raphaelbertholucci/CoinScope/main/pictures/home_light.webp" alt="Home Screen Light" width="250"/>
+  <img src="https://raw.githubusercontent.com/raphaelbertholucci/CoinScope/main/pictures/home_dark.webp" alt="Home Screen Dark" width="250"/>
+</div>
 
 ### Coin Details (Light & Dark)
-<p align="center">
-<img src="https://github.com/raphaelbertholucci/CoinScope/blob/main/readme-pictures/details_light.png" alt="Coin Details Light" width="250" height="480" />
-<img src="https://github.com/raphaelbertholucci/CoinScope/blob/main/readme-pictures/details_dark.png" alt="Coin Details Dark" width="250" height="480" />
-</p>
+
+<div style="display: flex; justify-content: center; gap: 10px;">
+  <img src="https://raw.githubusercontent.com/raphaelbertholucci/CoinScope/main/pictures/details_light.webp" alt="Coin Details Light" width="250"/>
+  <img src="https://raw.githubusercontent.com/raphaelbertholucci/CoinScope/main/pictures/details_dark.webp" alt="Coin Details Dark" width="250"/>
+</div>
+
+<br/>
 
 📜 License
 

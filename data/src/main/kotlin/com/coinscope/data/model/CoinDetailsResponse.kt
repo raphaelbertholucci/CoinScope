@@ -24,8 +24,7 @@ class DescriptionResponse(
 class LinkResponse(
     @SerializedName("homepage") val homepage: List<String>? = null,
     @SerializedName("official_forum_url") val officialForumUrl: List<String>? = null,
-    @SerializedName("repos_url") val reposUrl: ReposUrlResponse? = null,
-    @SerializedName("subreddit_url") val subredditUrl: String? = null
+    @SerializedName("repos_url") val reposUrl: ReposUrlResponse? = null
 )
 
 class ReposUrlResponse(

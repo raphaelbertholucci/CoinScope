@@ -26,9 +26,7 @@ class CoinDetailsViewModel(
 
     private fun getDetails() {
         getCoinDetailsByID(id)
-            .map {
-                _details.wrapResponse(it)
-            }
+            .map { _details.wrapResponse(it) }
             .catch {
                 _details.value = UIState.Error(
                     it.message ?: "Something went wrong. Please try again later."

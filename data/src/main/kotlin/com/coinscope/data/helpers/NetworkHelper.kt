@@ -1,6 +1,5 @@
 package com.coinscope.data.helpers
 
-import android.util.Log
 import com.coinscope.domain.ResultWrapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

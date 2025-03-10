@@ -9,7 +9,10 @@ A powerful cryptocurrency price tracking app built with **Jetpack Compose**, **K
 - **Multi-Module Architecture** – Separates concerns for scalability and maintainability.
 - **Paging 3 Support** – Efficient, smooth scrolling for large datasets.
 - **Dark Mode Support** – Automatically adjusts between **light** and **dark themes**.
-- **Unit Testing & CI/CD** – Ensuring code quality with **JUnit, MockK, and GitHub Actions**.
+- **Unit Testing** – Ensuring code quality with **JUnit and MockK**.
+- **CI Integration** – Automated builds, testing and code quality checks with GitHub Actions.
+- **Code Quality Enforcement** – Integrated **Detekt** for static analysis and **KtLint** for Kotlin style enforcement.
+- **Splash Screen** – Using the modern **Splash Screen API** provided by Android.
 
 ## 🏗️ Project Structure
 
@@ -40,7 +43,33 @@ CoinScope follows MVVM with Clean Architecture and modular structure to ensure s
 | Paging                    | Paging 3                          |
 | Asynchronous Programming  | Kotlin Coroutines                 |
 | Testing                   | JUnit, MockK, Coroutine Test      |
+| Linting & Code Quality    | Detekt, KtLint                    |
+| Splash Screen             | AndroidX Core Splashscreen        |
 
+## 🧪 Testing & CI
+CoinScope follows a **test-driven approach** using **JUnit + MockK** for unit tests, with automated integration via GitHub Actions:
+
+✅ **Repository Tests**  
+✅ **Extensions Tests**  
+✅ **CI Automation** (GitHub Actions)
+
+Run tests locally:
+```sh
+./gradlew test
+```
+
+## 📸 Screenshots
+### Home (Light & Dark)
+<p align="center">
+<img src="https://github.com/raphaelbertholucci/CoinScope/blob/main/readme-pictures/home_light.png" alt="Home Screen Light" width="250" height="480" />
+<img src="https://github.com/raphaelbertholucci/CoinScope/blob/main/readme-pictures/home_dark.png" alt="Home Screen Dark" width="250" height="480" />
+</p>
+
+### Coin Details (Light & Dark)
+<p align="center">
+<img src="https://github.com/raphaelbertholucci/CoinScope/blob/main/readme-pictures/details_light.png" alt="Coin Details Light" width="250" height="480" />
+<img src="https://github.com/raphaelbertholucci/CoinScope/blob/main/readme-pictures/details_dark.png" alt="Coin Details Dark" width="250" height="480" />
+</p>
 
 📜 License
 

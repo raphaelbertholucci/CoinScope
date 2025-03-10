@@ -6,8 +6,5 @@ import androidx.paging.cachedIn
 import com.coinscope.domain.interactor.GetCoins
 
 class CoinsViewModel(getCoins: GetCoins) : ViewModel() {
-
     val pagedContent = getCoins(Unit).cachedIn(viewModelScope)
-
-
 }

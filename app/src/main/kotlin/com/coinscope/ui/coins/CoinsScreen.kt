@@ -13,10 +13,12 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,7 +63,14 @@ fun CoinsScreen(viewModel: CoinsViewModel = getViewModel(), onSelect: (Coin) -> 
             Modifier.padding(top = it.calculateTopPadding())
         ) { state ->
             when (state.loadState.refresh) {
-                is LoadState.NotLoading -> Content(state, onSelect)
+                is LoadState.NotLoading -> Content(
+                    coinList = state,
+                    onSelect = onSelect,
+                    isRefreshing = viewModel.isRefreshing.value,
+                ) {
+                    viewModel.refreshCoins()
+                }
+
                 is LoadState.Loading -> LoadingWidget()
                 is LoadState.Error -> ErrorContent(message = stringResource(R.string.generic_error_message))
                 else -> Unit
@@ -70,16 +79,27 @@ fun CoinsScreen(viewModel: CoinsViewModel = getViewModel(), onSelect: (Coin) -> 
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Content(coinList: LazyPagingItems<Coin>, onSelect: (Coin) -> Unit) {
-    LazyColumn(
-        contentPadding = PaddingValues(all = Dimens.paddingMedium),
-        verticalArrangement = Arrangement.spacedBy(Dimens.medium)
+fun Content(
+    coinList: LazyPagingItems<Coin>,
+    onSelect: (Coin) -> Unit,
+    isRefreshing: Boolean = false,
+    onRefresh: () -> Unit
+) {
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh
     ) {
-        items(coinList.itemCount) { index ->
-            val coin = coinList[index]
-            CoinItem(coin) {
-                coin?.let(onSelect)
+        LazyColumn(
+            contentPadding = PaddingValues(all = Dimens.paddingMedium),
+            verticalArrangement = Arrangement.spacedBy(Dimens.medium)
+        ) {
+            items(coinList.itemCount) { index ->
+                val coin = coinList[index]
+                CoinItem(coin) {
+                    coin?.let(onSelect)
+                }
             }
         }
     }

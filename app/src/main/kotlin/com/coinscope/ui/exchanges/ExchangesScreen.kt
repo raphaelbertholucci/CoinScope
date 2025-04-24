@@ -32,10 +32,10 @@ import com.coinscope.design.widget.ErrorContent
 import com.coinscope.design.widget.LoadingWidget
 import com.coinscope.design.widget.SpacerWidget
 import com.coinscope.domain.model.Exchange
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ExchangesScreen(viewModel: ExchangesViewModel = getViewModel()) {
+fun ExchangesScreen(viewModel: ExchangesViewModel = koinViewModel()) {
     val pagedContent = viewModel.pagedContent.collectAsLazyPagingItems()
     Scaffold(topBar = {
         Text(

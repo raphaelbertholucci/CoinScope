@@ -14,8 +14,13 @@ import com.coinscope.domain.model.Exchange
 import com.coinscope.domain.model.SearchItem
 import com.coinscope.domain.repository.CoinsRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class CoinsRepositoryImpl(private val api: CoinScopeApi) : CoinsRepository {
+
+    private val mutex = Mutex()
+    private val coinDetailsCache = mutableMapOf<String, CachedCoinDetails>()
 
     override fun getCoins(): Flow<PagingData<Coin>> {
         return Pager(
@@ -39,7 +44,20 @@ class CoinsRepositoryImpl(private val api: CoinScopeApi) : CoinsRepository {
 
     override fun getCoinByID(id: String): Flow<ResultWrapper<CoinDetails>> {
         return safeApiCall {
-            CoinDetailsMapper.mapToDomain(api.getCoinByID(id = id))
+            mutex.withLock {
+                val cached = coinDetailsCache[id]
+                val now = System.currentTimeMillis()
+                if (cached != null && now - cached.timestamp < CACHE_EXPIRATION_MS) {
+                    return@safeApiCall cached.data
+                }
+                CoinDetailsMapper.mapToDomain(api.getCoinByID(id = id)).also { result ->
+                    coinDetailsCache[id] = CachedCoinDetails(result, now)
+                }
+            }
         }
     }
 }
+
+private const val CACHE_EXPIRATION_MS = 5 * 60 * 1000 // 5 minutes
+
+private data class CachedCoinDetails(val data: CoinDetails, val timestamp: Long)

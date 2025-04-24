@@ -20,7 +20,7 @@ object CoinDetailsMapper : BaseMapper<CoinDetailsResponse, CoinDetails> {
 
     override fun mapToDomain(response: CoinDetailsResponse): CoinDetails {
         return CoinDetails(
-            id = response.id.orEmpty(),
+            id = response.id,
             symbol = response.symbol,
             name = response.name,
             hashingAlgorithm = response.hashingAlgorithm,

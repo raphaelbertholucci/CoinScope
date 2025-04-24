@@ -1,17 +1,17 @@
 package com.coinscope.domain.model
 
 data class CoinDetails(
-    val id: String?,
-    val symbol: String?,
-    val name: String?,
-    val hashingAlgorithm: String?,
-    val categories: List<String>?,
-    val description: String?,
-    val links: Link?,
-    val image: Image?,
-    val genesisDate: String?,
-    val rank: Int?,
-    val marketData: MarketData?
+    val id: String? = null,
+    val symbol: String? = null,
+    val name: String? = null,
+    val hashingAlgorithm: String? = null,
+    val categories: List<String>? = null,
+    val description: String? = null,
+    val links: Link? = null,
+    val image: Image? = null,
+    val genesisDate: String? = null,
+    val rank: Int? = null,
+    val marketData: MarketData? = null
 )
 
 data class Link(

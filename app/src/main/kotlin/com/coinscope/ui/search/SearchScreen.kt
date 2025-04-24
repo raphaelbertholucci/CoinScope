@@ -39,11 +39,11 @@ import com.coinscope.design.widget.LoadingWidget
 import com.coinscope.design.widget.SearchWidget
 import com.coinscope.design.widget.SpacerWidget
 import com.coinscope.domain.model.SearchItem
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = getViewModel(), onSelect: (String?) -> Unit) {
+fun SearchScreen(viewModel: SearchViewModel = koinViewModel(), onSelect: (String?) -> Unit) {
     val contentState by viewModel.content.collectAsStateWithLifecycle()
     val searchQuery = viewModel.query
 

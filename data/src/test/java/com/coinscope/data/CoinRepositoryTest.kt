@@ -3,6 +3,7 @@ package com.coinscope.data
 import androidx.paging.PagingSource
 import com.coinscope.data.mapper.CoinMapper
 import com.coinscope.data.mapper.SearchMapper
+import com.coinscope.data.model.CoinDetailsResponse
 import com.coinscope.data.model.CoinResponse
 import com.coinscope.data.model.CoinSearchResponse
 import com.coinscope.data.model.SearchResponse
@@ -10,6 +11,7 @@ import com.coinscope.data.repository.CoinsPagingSource
 import com.coinscope.data.repository.CoinsRepositoryImpl
 import com.coinscope.domain.ResultWrapper
 import com.coinscope.domain.model.Coin
+import com.coinscope.domain.model.CoinDetails
 import com.coinscope.domain.model.SearchItem
 import com.coinscope.domain.repository.CoinsRepository
 import io.mockk.coEvery
@@ -91,5 +93,24 @@ class CoinRepositoryTest {
         val result = pagingSource.load(PagingSource.LoadParams.Refresh(1, 30, false))
 
         assertTrue(result is PagingSource.LoadResult.Error)
+    }
+
+    @Test
+    fun `getCoinByID() returns cached result if available and not expired()`() = runBlocking {
+        val coinId = "bitcoin"
+        val fakeResponse = CoinDetailsResponse(name = "Bitcoin")
+        val mappedCoin = CoinDetails(name = "Bitcoin")
+
+        coEvery { apiService.getCoinByID(coinId) } returns fakeResponse
+
+        // First call populates the cache
+        val firstResult = repository.getCoinByID(coinId).toList().first()
+        assertTrue(firstResult is ResultWrapper.Success)
+        assertEquals(mappedCoin, (firstResult as ResultWrapper.Success).value)
+
+        // Second call should return the cached result, no API call expected
+        val secondResult = repository.getCoinByID(coinId).toList().first()
+        assertTrue(secondResult is ResultWrapper.Success)
+        assertEquals(mappedCoin, (secondResult as ResultWrapper.Success).value)
     }
 }

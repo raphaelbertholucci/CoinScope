@@ -5,5 +5,5 @@ import com.coinscope.domain.repository.CoinsRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    factory<CoinsRepository> { CoinsRepositoryImpl(get()) }
+    single<CoinsRepository> { CoinsRepositoryImpl(get()) }
 }

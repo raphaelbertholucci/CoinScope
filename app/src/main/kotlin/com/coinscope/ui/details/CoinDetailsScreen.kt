@@ -47,13 +47,13 @@ import com.coinscope.domain.model.Image
 import com.coinscope.domain.model.Link
 import com.coinscope.domain.model.MarketData
 import com.coinscope.domain.model.ReposUrl
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun CoinDetailsScreen(
     id: String,
-    viewModel: CoinDetailsViewModel = getViewModel { parametersOf(id) },
+    viewModel: CoinDetailsViewModel = koinViewModel { parametersOf(id) },
     onBack: () -> Unit
 ) {
 

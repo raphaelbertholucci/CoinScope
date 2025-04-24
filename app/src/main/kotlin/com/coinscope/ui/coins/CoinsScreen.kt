@@ -42,10 +42,10 @@ import com.coinscope.design.widget.ErrorContent
 import com.coinscope.design.widget.LoadingWidget
 import com.coinscope.design.widget.SpacerWidget
 import com.coinscope.domain.model.Coin
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CoinsScreen(viewModel: CoinsViewModel = getViewModel(), onSelect: (Coin) -> Unit) {
+fun CoinsScreen(viewModel: CoinsViewModel = koinViewModel(), onSelect: (Coin) -> Unit) {
 
     val contentState = viewModel.pagedContent.collectAsLazyPagingItems()
 

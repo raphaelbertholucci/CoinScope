@@ -65,7 +65,10 @@ fun Content(data: LazyPagingItems<Exchange>) {
         contentPadding = PaddingValues(all = Dimens.paddingMedium),
         verticalArrangement = Arrangement.spacedBy(Dimens.large)
     ) {
-        items(data.itemCount) { index ->
+        items(
+            count = data.itemCount,
+            key = { index -> data[index]?.id ?: index }
+        ) { index ->
             val item = data[index]
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(

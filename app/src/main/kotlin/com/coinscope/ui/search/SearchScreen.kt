@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -124,7 +125,9 @@ fun SearchContent(data: List<SearchItem>, onSelect: (String?) -> Unit) {
                 )
             }
             val list = search.value
-            items(list.size) { index ->
+            items(
+                count = data.size,
+                key = { index -> data[index].id ?: index }) { index ->
                 SearchItemContent(list[index], onSelect)
             }
         }
@@ -133,12 +136,13 @@ fun SearchContent(data: List<SearchItem>, onSelect: (String?) -> Unit) {
 
 @Composable
 fun SearchItemContent(item: SearchItem, onSelect: (String?) -> Unit) {
+    val onClick by rememberUpdatedState(onSelect)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(all = Dimens.medium)
-            .clickable { if (item.type == "coin") onSelect(item.id) }
+            .clickable { if (item.type == "coin") onClick(item.id) }
     ) {
         item.thumb?.let { thumb ->
             AsyncImage(

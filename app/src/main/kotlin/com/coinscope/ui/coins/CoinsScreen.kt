@@ -20,6 +20,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -95,7 +97,10 @@ fun Content(
             contentPadding = PaddingValues(all = Dimens.paddingMedium),
             verticalArrangement = Arrangement.spacedBy(Dimens.medium)
         ) {
-            items(coinList.itemCount) { index ->
+            items(
+                count = coinList.itemCount,
+                key = { index -> coinList[index]?.id ?: index }
+            ) { index ->
                 val coin = coinList[index]
                 CoinItem(coin) {
                     coin?.let(onSelect)
@@ -107,12 +112,13 @@ fun Content(
 
 @Composable
 fun CoinItem(coin: Coin?, onSelect: () -> Unit) {
+    val onClick by rememberUpdatedState(onSelect)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(all = Dimens.medium)
-            .clickable { onSelect() }
+            .clickable { onClick() }
     ) {
         AsyncImage(
             model = coin?.image,

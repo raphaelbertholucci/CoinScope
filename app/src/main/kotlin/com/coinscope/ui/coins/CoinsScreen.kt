@@ -99,7 +99,7 @@ fun Content(
         ) {
             items(
                 count = coinList.itemCount,
-                key = { index -> coinList[index]?.id ?: index }
+                key = { index -> coinList.peek(index)?.id ?: index }
             ) { index ->
                 val coin = coinList[index]
                 CoinItem(coin) {

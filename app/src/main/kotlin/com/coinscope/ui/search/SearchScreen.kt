@@ -1,7 +1,6 @@
 package com.coinscope.ui.search
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -108,7 +107,6 @@ fun HintContent() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchContent(data: List<SearchItem>, onSelect: (String?) -> Unit) {
     val groupedSearch = data.groupBy { it.type }
@@ -124,11 +122,10 @@ fun SearchContent(data: List<SearchItem>, onSelect: (String?) -> Unit) {
                         .padding(horizontal = Dimens.large, vertical = Dimens.medium)
                 )
             }
-            val list = search.value
             items(
                 count = data.size,
                 key = { index -> data[index].id ?: index }) { index ->
-                SearchItemContent(list[index], onSelect)
+                SearchItemContent(data[index], onSelect)
             }
         }
     }
